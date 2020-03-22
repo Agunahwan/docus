@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docus", "Docus\Docus.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docus.Model", "Docus.Model\Docus.Model.csproj", "{74356EDA-F3D6-498B-83E9-6B27EF586FE7}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Docus.Database", "Docus.Database\Docus.Database.sqlproj", "{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docus.Data", "Docus.Data\Docus.Data.csproj", "{C5418043-8FEA-469F-8446-8118973CA94D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,16 @@ Global
 		{74356EDA-F3D6-498B-83E9-6B27EF586FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74356EDA-F3D6-498B-83E9-6B27EF586FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74356EDA-F3D6-498B-83E9-6B27EF586FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE5BA8D9-33CA-4BDC-BE77-304A11248D69}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C5418043-8FEA-469F-8446-8118973CA94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5418043-8FEA-469F-8446-8118973CA94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5418043-8FEA-469F-8446-8118973CA94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5418043-8FEA-469F-8446-8118973CA94D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
