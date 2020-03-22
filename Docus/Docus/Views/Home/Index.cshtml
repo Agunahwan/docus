@@ -1,0 +1,249 @@
+﻿@model Docus.Model.Class.Document
+
+@{
+    ViewBag.Title = "Data Document";
+}
+
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="box box-default">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading" data-toggle="collapse" data-target="#searchBody" aria-expanded="true">List Of Document</div>
+                            <ul class="list-group collapse in" id="searchBody" aria-expanded="true">
+                                <li class="list-group-item">
+                                    <div class="row form-search">
+                                        <div class="form-group col-md-7">
+                                            <label class="col-sm-4 control-label label-search" for="@Html.NameFor(a => a.DocumentName)Search">Search Document  :</label>
+                                            <input type="hidden" name="data-@Html.NameFor(a => a.DocumentName)Search" id="data-@Html.NameFor(a => a.DocumentName)Search" />
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" id="@Html.NameFor(a => a.DocumentName)Search" name="@Html.NameFor(a => a.DocumentName)Search" placeholder="Document" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-block btn-primary" id="search" onclick="searchData()">Search</button>
+                                        </div>
+                                    </div>
+                                    <div class="row form-search">
+                                        <div class="col-md-7">
+                                            &nbsp;
+                                        </div>
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-block btn-primary" onclick="addData()">+ Add Document</button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="tableData" class="table table-bordered table-hover">
+                                    <thead>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        var masterDataTable;
+
+    $(document).ready(function () {
+        setDataTables("@Url.Action("GetAllData", "Home")");
+    });
+
+    function setDataTables(url) {
+        masterDataTable = $('#tableData').DataTable({
+            "ajax": {
+                "dataType": 'json',
+                "contentType": "application/json; charset=utf-8",
+                "type": "GET",
+                "url": url,
+                "data": function (data) {
+                    data.Name = $('#data-@Html.NameFor(a => a.DocumentName)Search').val();
+                },
+                "dataSrc": function (json) {
+                    console.log(json);
+                    var return_data = new Array();
+                    for (var i = 0; i < json.length; i++) {
+                        return_data.push({
+                            "no": (i + 1),
+                            "action": '<button type="button" class="btn btn-xs btn-warning" onclick="editData(' + json[i].DocumentId + ')">Edit</button>&nbsp;<button type="button" class="btn btn-xs btn-danger" onclick="deleteData(' + json[i].DocumentId + ')">Delete</button>',
+                            "PSCode": json[i].PSCode,
+                            "Name": json[i].Name,
+                            "BirthDate": json[i].BirthDate,
+                            "Email": json[i].Email,
+                            "Phone": json[i].Phone
+                        });
+                    }
+                    return return_data;
+                }
+            },
+            "language": {
+                "emptyTable": "There are no Document at present.",
+                "zeroRecords": "There were no matching Document found."
+            },
+            "ordering": false,
+            "paging": true,
+            "columns": [
+                { 'data': 'PSCode', 'title': 'PSCode' },
+                { 'data': 'Name', 'title': 'Name' },
+                { 'data': 'BirthDate', 'title': 'BirthDate' },
+                { 'data': 'Email', 'title': 'Email' },
+                { 'data': 'Phone', 'title': 'Phone' },
+                { 'data': 'action', 'title': 'Action' }
+            ],
+            "columnDefs": [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width": "10%"
+                },
+                {
+                    "targets": 6,
+                    "className": "text-center",
+                    "width": "20%"
+                }
+            ]
+        });
+    }
+
+    function refreshData() {
+        masterDataTable.ajax.reload();
+    }
+
+    function openDialog(title) {
+        $("#message-data-title").html(title);
+        $("#message-data-form").show();
+        $("#Save").show();
+        $("#message-data-label").attr("class", "hide");
+        $('#modal-data').modal('show');
+        $("#@Html.NameFor(a => a.DocumentName)").focus();
+    }
+
+    function closeDialog() {
+        $('#modal-data').modal('hide');
+    }
+
+    function addData() {
+        window.location = "@Url.Action("Add","Home")";
+    }
+
+    function setSuccessMessage(title, message) {
+        $("#message-data-form").hide();
+        $("#Save").hide();
+        $("#message-data-title").html(title);
+        $("#message-data-body").html(message);
+        $("#message-data-label").attr("class", "alert alert-success");
+    }
+
+    function setErrorMessage(title, message) {
+        $("#message-data-title").html(title);
+        $("#message-data-body").html(message);
+        $("#message-data-label").attr("class", "alert alert-danger");
+    }
+
+    function searchData() {
+        $("#data-@Html.NameFor(a => a.DocumentName)Search").val($("#@Html.NameFor(a => a.DocumentName)Search").val());
+        refreshData();
+    }
+
+    function editData(id) {
+        $.ajax({
+            url: "@Url.Action("GetDocument", "Document")",
+            data: {
+                "@Html.NameFor(a => a.DocumentId)": id
+            },
+            cache: false,
+            type: "GET",
+            success: function (data, textStatus, jQxhr) {
+                $('#@Html.NameFor(a => a.DocumentId)').val(data.DocumentId);
+                $('#@Html.NameFor(a => a.DocumentName)').val(data.DocumentName);
+                openDialog("Edit Data");
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+                showMessageCommon("Edit Data", errorThrown, false);
+            }
+        });
+    }
+
+    function saveData() {
+        var id = $("#@Html.NameFor(a => a.DocumentId)").val();
+        var name = $("#@Html.NameFor(a => a.DocumentName)").val();
+        var date = getDateTime();
+        var title = "Add Data";
+
+        if (isValid(title, email, phone)) {
+            $.ajax({
+                url: "@Url.Action("SaveDocument", "Document")",
+                data: {
+                    "@Html.NameFor(a => a.DocumentName)": name
+                },
+                cache: false,
+                type: "POST",
+                success: function (data, textStatus, jQxhr) {
+                    if (data > 0) {
+                        refreshData();
+                        setSuccessMessage(title, "Data berhasil disimpan");
+                    }
+                    else {
+                        setErrorMessage(title, "Data gagal disimpan");
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    setErrorMessage(title, errorThrown);
+                }
+            });
+        }
+    }
+
+    function updateData() {
+        var id = $("#@Html.NameFor(a => a.DocumentId)").val();
+        var name = $("#@Html.NameFor(a => a.DocumentName)").val();
+        var date = getDateTime();
+        var title = "Edit Data";
+
+        if (isValid(title, email, phone)) {
+            $.ajax({
+                url: "@Url.Action("UpdateDocument", "Document")",
+                data: {
+                    "@Html.NameFor(a => a.DocumentId)": id,
+                    "@Html.NameFor(a => a.DocumentName)": name
+                },
+                cache: false,
+                type: "POST",
+                success: function (data, textStatus, jQxhr) {
+                    if (data > 0) {
+                        refreshData();
+                        setSuccessMessage(title, "Data berhasil disimpan");
+                    }
+                    else {
+                        setErrorMessage(title, "Data gagal disimpan");
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    setErrorMessage(title, errorThrown);
+                }
+            });
+        }
+    }
+</script>
